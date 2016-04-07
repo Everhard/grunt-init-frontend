@@ -29,6 +29,14 @@ exports.template = function(grunt, init, done) {
 		init.prompt('author_name'),
 		init.prompt('author_email')
 	], function(err, props) {
+            
+                // Creating folders:
+                var join = require("path").join;
+                grunt.file.mkdir( join(init.destpath(), 'src/js') );
+                grunt.file.mkdir( join(init.destpath(), 'src/less') );
+                grunt.file.mkdir( join(init.destpath(), 'src/img') );
+                grunt.file.mkdir( join(init.destpath(), 'dist') );
+            
 		// Files to copy (and process).
 		var files = init.filesToCopy(props);
 
@@ -51,12 +59,6 @@ exports.template = function(grunt, init, done) {
                                 'grunt-contrib-watch' : 'latest'
 			}
 		});
-                
-                var join = require("path").join;
-                grunt.file.mkdir( join(init.destpath(), 'src/js') );
-                grunt.file.mkdir( join(init.destpath(), 'src/less') );
-                grunt.file.mkdir( join(init.destpath(), 'src/img') );
-                grunt.file.mkdir( join(init.destpath(), 'dist') );
 
 		// All done!
     		done();
