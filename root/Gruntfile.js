@@ -4,6 +4,15 @@ module.exports = function(grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         
+        copy: {
+            dist: {
+                src: '**/*.html',
+                dest: 'dist/',
+                expand: true,
+                cwd: 'src/'
+            }
+        },
+        
         concat: {
             options: {
                 stripBanners: true
@@ -61,6 +70,7 @@ module.exports = function(grunt) {
         }
     });
 
+    grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-jshint');
@@ -72,5 +82,6 @@ module.exports = function(grunt) {
     // Default task(s).
     grunt.registerTask('styles', ['less', 'cssmin']);
     grunt.registerTask('scripts', ['concat', 'removelogging', 'uglify', 'jshint']);
-    grunt.registerTask('default', ['styles', 'scripts', 'watch']);
+    grunt.registerTask('html', ['copy']);
+    grunt.registerTask('default', ['html', 'styles', 'scripts', 'watch']);
 };

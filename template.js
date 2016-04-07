@@ -41,6 +41,7 @@ exports.template = function(grunt, init, done) {
 			version: props.version,
 			devDependencies: {
 				'grunt' : 'latest',
+                                'grunt-contrib-copy' : 'latest',
                                 'grunt-contrib-uglify' : 'latest',
                                 'grunt-contrib-concat' : 'latest',
                                 'grunt-contrib-jshint' : 'latest',
