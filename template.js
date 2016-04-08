@@ -61,6 +61,14 @@ exports.template = function(grunt, init, done) {
                                 'grunt-contrib-watch' : 'latest'
 			}
 		});
+                
+                // Generate bower.json file, used by bower.
+		init.writePackageJSON('bower.json', {
+			name: props.name,
+                        dependencies: {
+                          "normalize-css": "latest"
+                        }
+		});
 
 		// All done!
     		done();
