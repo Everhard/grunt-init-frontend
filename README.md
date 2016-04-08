@@ -7,6 +7,7 @@ Grunt plugins which I use:
 - grunt-remove-logging
 - grunt-contrib-less
 - grunt-contrib-cssmin
+- grunt-postcss (autoprefixer)
 - grunt-contrib-watch
 
 ## How to install?

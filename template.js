@@ -56,6 +56,8 @@ exports.template = function(grunt, init, done) {
                                 'grunt-remove-logging' : 'latest',
                                 'grunt-contrib-less' : 'latest',
                                 'grunt-contrib-cssmin' : 'latest',
+                                'grunt-postcss' : 'latest',
+                                'autoprefixer' : 'latest',
                                 'grunt-contrib-watch' : 'latest'
 			}
 		});

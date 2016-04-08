@@ -51,6 +51,17 @@ module.exports = function(grunt) {
             }
         },
         
+        postcss: {
+            options: {
+                processors: [
+                    require('autoprefixer')({browsers: ['last 2 versions']})
+                ]
+            },
+            dist: {
+                src: '<%= less.dist.dest %>'
+            }
+        },
+        
         cssmin: {
             dist: {
                 src: '<%= less.dist.dest %>',
@@ -77,10 +88,11 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks("grunt-remove-logging");
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
+    grunt.loadNpmTasks('grunt-postcss');
     grunt.loadNpmTasks('grunt-contrib-watch');
 
     // Default task(s).
-    grunt.registerTask('styles', ['less', 'cssmin']);
+    grunt.registerTask('styles', ['less', 'postcss', 'cssmin']);
     grunt.registerTask('scripts', ['concat', 'removelogging', 'uglify', 'jshint']);
     grunt.registerTask('html', ['copy']);
     grunt.registerTask('default', ['html', 'styles', 'scripts', 'watch']);
