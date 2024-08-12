@@ -1,0 +1,17 @@
+%centered-content {
+  margin: 0 auto;
+  width: 600px;
+  text-align: center;
+}
+
+header {
+  @extend %centered-content;
+}
+
+main {
+  @extend %centered-content;
+}
+
+footer {
+  @extend %centered-content;
+}

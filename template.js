@@ -1,76 +1,51 @@
 /*
- * grunt-init-html5layout
- * https://gruntjs.com/
+ * grunt-init-frontend
+ * https://github.com/Everhard/grunt-init-frontend
  *
  * Copyright (c) 2016 Andrew Dorokhov
+ * https://dorokhov.dev
  * Licensed under the MIT license.
  */
 
 'use strict';
 
-// Basic template description.
-exports.description = "Create a basic file structure for HTML5-layouts.";
+/**
+ * Basic template description.
+ * @type {string}
+ */
+exports.description = 'This is an easy to install grunt template to start developing your frontend in seconds.';
 
-// Template-specific notes to be displayed after question prompts.
-exports.after = 'You should now install project dependencies with _npm ' +
-  'install_. After that, you may execute project tasks with _grunt_.';
+/**
+ * Template-specific notes to be displayed before question prompts.
+ * @type {string}
+ */
+exports.notes = 'Thank you for using this template! ' +
+    'Take a look at the https://github.com/Everhard/grunt-init-frontend repo before using.';
 
-// Any existing file or directory matching this wildcard will cause a warning.
+/**
+ * Any existing file or directory matching this wildcard will cause a warning.
+ * @type {string}
+ */
 exports.warnOn = '*';
 
-// The actual init template.
+/**
+ * The actual init template.
+ *
+ * @param grunt
+ * @param init
+ * @param done
+ */
 exports.template = function(grunt, init, done) {
-	init.process({'version':'0.1.0'}, [
-		// Prompt for these values.
-		init.prompt('title', 'HTML5 Layout'),
-		init.prompt('name', 'html5-layout'),
-		init.prompt('description', 'HTML5 Layout for exclusive web project.'),
-		init.prompt('repository'),
-		init.prompt('author_name'),
-		init.prompt('author_email')
-	], function(err, props) {
-            
-                // Creating folders:
-                var join = require("path").join;
-                grunt.file.mkdir( join(init.destpath(), 'src/js') );
-                grunt.file.mkdir( join(init.destpath(), 'src/less') );
-                grunt.file.mkdir( join(init.destpath(), 'src/img') );
-                grunt.file.mkdir( join(init.destpath(), 'dist') );
-            
-		// Files to copy (and process).
-		var files = init.filesToCopy(props);
 
-		// Actually copy (and process) files.
-		init.copyAndProcess(files, props);
+    init.process({}, [], function(err, props) {
 
-		// Generate package.json file, used by npm and grunt.
-		init.writePackageJSON('package.json', {
-			name: props.name,
-			version: props.version,
-			devDependencies: {
-				'grunt' : 'latest',
-                                'grunt-contrib-copy' : 'latest',
-                                'grunt-contrib-uglify' : 'latest',
-                                'grunt-contrib-concat' : 'latest',
-                                'grunt-contrib-jshint' : 'latest',
-                                'grunt-remove-logging' : 'latest',
-                                'grunt-contrib-less' : 'latest',
-                                'grunt-contrib-cssmin' : 'latest',
-                                'grunt-postcss' : 'latest',
-                                'autoprefixer' : 'latest',
-                                'grunt-contrib-watch' : 'latest'
-			}
-		});
-                
-                // Generate bower.json file, used by bower.
-		init.writePackageJSON('bower.json', {
-			name: props.name,
-                        dependencies: {
-                          "normalize-css": "latest"
-                        }
-		});
+        // Files to copy (and process).
+        const files = init.filesToCopy(props);
 
-		// All done!
-    		done();
-	});
-}
+        // Actually copy (and process) files.
+        init.copyAndProcess(files, props);
+
+        // All done!
+        done();
+    });
+};

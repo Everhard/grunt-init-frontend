@@ -1,99 +1,90 @@
 module.exports = function(grunt) {
-    
-    // Project configuration:
+
+    grunt.loadNpmTasks('grunt-includes');
+    grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-contrib-sass');
+    grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-contrib-jshint');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-watch');
+
     grunt.initConfig({
-        pkg: grunt.file.readJSON('package.json'),
-        
-        copy: {
-            dist: {
-                src: '**/*.html',
-                dest: 'dist/',
-                expand: true,
-                cwd: 'src/'
+        includes: {
+            'html-files': {
+                cwd: 'src',
+                src: ['**/*.html', '!**/html-parts/**'],
+                dest: 'dest/'
             }
         },
-        
+        copy: {
+            'app-files': {
+                expand: true,
+                cwd: 'src',
+                src: [
+                    '**/*',                 // Match all the files inside the `src` directory.
+                    '!**/html-parts/**',    // Exclude the `html-parts` folders since we don't need it in production.
+                    '!**/scss/**',          // Exclude the SASS files since they are processed with the `sass` task.
+                    '!**/*.html',           // Exclude the HTML files since they are processed with the `includes` task.
+                    '!**/*.js',             // Exclude the JS files since they are processed with the `uglify` task.
+                ],
+                dest: 'dest/'
+            }
+        },
         concat: {
             options: {
                 stripBanners: true
             },
-            dist: {
-                src: ['src/js/**/*.js'],
-                dest: 'dist/js/scripts.js'
+            jsFiles: {
+                src: 'src/js/**/*.js',
+                dest: 'dest/js/scripts.js'
             }
         },
-        
-        removelogging: {
-            dist: {
-                src: '<%= concat.dist.dest %>'
+        sass: {
+            options: {
+                style: 'expanded',
+                noCache: true,
+                sourcemap: 'none'
+            },
+            'scss-files': {
+                src: 'src/scss/styles.scss',
+                dest: 'dest/css/styles.css'
             }
         },
-        
+        jshint: {
+            'js-files': ['Gruntfile.js', 'src/**/*.js']
+        },
         uglify: {
             options: {
-                banner: '/*! <%= pkg.name %> <%= grunt.template.today("dd-mm-yyyy") %> */\n'
+                banner: '/*! <%= grunt.template.today("dd.mm.yyyy") %> */\n'
             },
-            dist: {
+            'js-files': {
                 files: {
-                    'dist/js/scripts.min.js': ['<%= concat.dist.dest %>']
+                    'dest/js/scripts.min.js': '<%= concat.jsFiles.dest %>'
                 }
             }
         },
-        
-        jshint: {
-            files: ['Gruntfile.js', 'src/js/**/*.js']
-        },
-        
-        less: {
-            dist: {
-                src: 'src/less/**/*.less',
-                dest: 'dist/css/styles.css'
-            }
-        },
-        
-        postcss: {
-            options: {
-                processors: [
-                    require('autoprefixer')({browsers: ['last 2 versions']})
-                ]
-            },
-            dist: {
-                src: '<%= less.dist.dest %>'
-            }
-        },
-        
-        cssmin: {
-            dist: {
-                src: '<%= less.dist.dest %>',
-                dest: 'dist/css/styles.min.css'
-            }
-        },
-        
         watch: {
-            js: {
-                files: 'src/js/**/*.js',
-                tasks: ['scripts']
+            options: {
+                cwd: 'src'
             },
-            less: {
-                files: 'src/less/**/*.less',
-                tasks: ['styles']
+            'html-files': {
+                files: ['**/*.html'],
+                tasks: ['includes']
+            },
+            'scss-files': {
+                files: ['**/*.scss'],
+                tasks: ['sass']
+            },
+            'js-files': {
+                files: ['../Gruntfile.js', '**/*.js'],
+                tasks: ['jshint', 'uglify']
+            },
+            'other-files': {
+                files: ['**/*', '!**/*.html', '!**/*.scss'],
+                tasks: ['copy']
             }
         }
     });
 
-    grunt.loadNpmTasks('grunt-contrib-copy');
-    grunt.loadNpmTasks('grunt-contrib-uglify');
-    grunt.loadNpmTasks('grunt-contrib-concat');
-    grunt.loadNpmTasks('grunt-contrib-jshint');
-    grunt.loadNpmTasks("grunt-remove-logging");
-    grunt.loadNpmTasks('grunt-contrib-less');
-    grunt.loadNpmTasks('grunt-contrib-cssmin');
-    grunt.loadNpmTasks('grunt-postcss');
-    grunt.loadNpmTasks('grunt-contrib-watch');
-
-    // Default task(s).
-    grunt.registerTask('styles', ['less', 'postcss', 'cssmin']);
-    grunt.registerTask('scripts', ['concat', 'removelogging', 'uglify', 'jshint']);
-    grunt.registerTask('html', ['copy']);
-    grunt.registerTask('default', ['html', 'styles', 'scripts', 'watch']);
+    grunt.registerTask('default', ['includes', 'copy', 'sass', 'jshint', 'concat', 'uglify', 'watch']);
 };
