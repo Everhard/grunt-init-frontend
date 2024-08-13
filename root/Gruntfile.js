@@ -3,12 +3,14 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-includes');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-sass');
+    grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-uglify');
-    grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('@lodder/grunt-postcss');
 
     grunt.initConfig({
+
         includes: {
             'html-files': {
                 cwd: 'src',
@@ -16,6 +18,7 @@ module.exports = function(grunt) {
                 dest: 'dest/'
             }
         },
+
         copy: {
             'app-files': {
                 expand: true,
@@ -30,6 +33,7 @@ module.exports = function(grunt) {
                 dest: 'dest/'
             }
         },
+
         concat: {
             options: {
                 stripBanners: true
@@ -39,20 +43,34 @@ module.exports = function(grunt) {
                 dest: 'dest/js/scripts.js'
             }
         },
+
         sass: {
             options: {
                 style: 'expanded',
                 noCache: true,
                 sourcemap: 'none'
             },
-            'scss-files': {
+            scssFiles: {
                 src: 'src/scss/styles.scss',
                 dest: 'dest/css/styles.css'
             }
         },
+
+        postcss: {
+            options: {
+                processors: [
+                    require('autoprefixer')()
+                ]
+            },
+            cssFiles: {
+                src: '<%= sass.scssFiles.dest %>'
+            }
+        },
+
         jshint: {
             'js-files': ['Gruntfile.js', 'src/**/*.js']
         },
+
         uglify: {
             options: {
                 banner: '/*! <%= grunt.template.today("dd.mm.yyyy") %> */\n'
@@ -63,6 +81,7 @@ module.exports = function(grunt) {
                 }
             }
         },
+
         watch: {
             options: {
                 cwd: 'src'
@@ -73,7 +92,7 @@ module.exports = function(grunt) {
             },
             'scss-files': {
                 files: ['**/*.scss'],
-                tasks: ['sass']
+                tasks: ['sass', 'postcss']
             },
             'js-files': {
                 files: ['../Gruntfile.js', '**/*.js'],
@@ -86,5 +105,5 @@ module.exports = function(grunt) {
         }
     });
 
-    grunt.registerTask('default', ['includes', 'copy', 'sass', 'jshint', 'concat', 'uglify', 'watch']);
+    grunt.registerTask('default', ['includes', 'copy', 'sass', 'postcss', 'jshint', 'concat', 'uglify', 'watch']);
 };
