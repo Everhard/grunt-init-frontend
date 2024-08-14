@@ -37,13 +37,47 @@ exports.warnOn = '*';
  */
 exports.template = function(grunt, init, done) {
 
-    init.process({}, [], function(err, props) {
+    const userValues = [
+        init.prompt('name', 'my-project'),
+        init.prompt('description', 'My awesome project'),
+        init.prompt('author_name'),
+        init.prompt('author_email'),
+        init.prompt('author_url'),
+        init.prompt('repository')
+    ];
+
+    init.process({'version':'0.1.0'}, userValues, function(err, props) {
 
         // Files to copy (and process).
         const files = init.filesToCopy(props);
 
         // Actually copy (and process) files.
         init.copyAndProcess(files, props);
+
+        // Generate package.json file, used by npm and grunt.
+        init.writePackageJSON('package.json', {
+            name: props.name,
+            version: props.version,
+            author_name: props.author_name,
+            author_email: props.author_email,
+            author_url: props.author_url,
+            repository: {
+                type: "git",
+                url: props.repository
+            },
+            devDependencies: {
+                "grunt": "^1.6.1",
+                "grunt-includes": "^1.1.0",
+                "grunt-contrib-concat": "^2.1.0",
+                "grunt-contrib-copy": "^1.0.0",
+                "grunt-contrib-jshint": "^3.2.0",
+                "grunt-contrib-sass": "^2.0.0",
+                "grunt-contrib-uglify": "^5.2.2",
+                "grunt-contrib-watch": "^1.1.0",
+                "@lodder/grunt-postcss": "^3.1.1",
+                "autoprefixer": "^10.4.20",
+            }
+        });
 
         // All done!
         done();

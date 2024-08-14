@@ -18,11 +18,19 @@ I included the following grunt plugins into the configuration:
 | [grunt&#8209;contrib&#8209;watch](https://www.npmjs.com/package/grunt-contrib-watch)   | This plugin watches files for changes and automatically runs specified tasks when changes are detected. It’s useful for automating repetitive tasks during development, such as compiling Sass or running JSHint whenever you save a file.                  |
 
 ## Getting started
-Install the template:
+Copy the template script:
 ```shell
 git clone https://github.com/Everhard/grunt-init-frontend.git ~/.grunt-init/frontend
 ```
-Start using it:
+Install the template:
 ```shell
 grunt-init frontend
+```
+Install the dependencies:
+```shell
+npm install
+```
+And start working:
+```shell
+npx grunt
 ```
