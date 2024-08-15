@@ -6,6 +6,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-jshint');
+    grunt.loadNpmTasks("grunt-remove-logging");
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('@lodder/grunt-postcss');
 
@@ -71,6 +72,12 @@ module.exports = function(grunt) {
             'js-files': ['Gruntfile.js', 'src/**/*.js']
         },
 
+        removelogging: {
+            jsFiles: {
+                src: '<%= concat.jsFiles.dest %>'
+            }
+        },
+
         uglify: {
             options: {
                 banner: '/*! <%= grunt.template.today("dd.mm.yyyy") %> */\n'
@@ -88,22 +95,27 @@ module.exports = function(grunt) {
             },
             'html-files': {
                 files: ['**/*.html'],
-                tasks: ['includes']
+                tasks: ['html']
             },
             'scss-files': {
                 files: ['**/*.scss'],
-                tasks: ['sass', 'postcss']
+                tasks: ['styles']
             },
             'js-files': {
                 files: ['../Gruntfile.js', '**/*.js'],
-                tasks: ['jshint', 'uglify']
+                tasks: ['scripts']
             },
             'other-files': {
-                files: ['**/*', '!**/*.html', '!**/*.scss'],
-                tasks: ['copy']
+                files: ['**/*', '!**/*.html', '!**/*.scss', '!**/*.js'],
+                tasks: ['assets']
             }
         }
     });
 
-    grunt.registerTask('default', ['includes', 'copy', 'sass', 'postcss', 'jshint', 'concat', 'uglify', 'watch']);
+    grunt.registerTask('html', ['includes']);
+    grunt.registerTask('styles', ['sass', 'postcss']);
+    grunt.registerTask('scripts', ['jshint', 'concat', 'removelogging', 'uglify']);
+    grunt.registerTask('assets', ['copy']);
+
+    grunt.registerTask('default', ['html', 'styles', 'scripts', 'assets', 'watch']);
 };

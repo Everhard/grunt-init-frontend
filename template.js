@@ -73,6 +73,7 @@ exports.template = function(grunt, init, done) {
                 "grunt-contrib-jshint": "^3.2.0",
                 "grunt-contrib-sass": "^2.0.0",
                 "grunt-contrib-uglify": "^5.2.2",
+                "grunt-remove-logging": "^0.2.0",
                 "grunt-contrib-watch": "^1.1.0",
                 "@lodder/grunt-postcss": "^3.1.1",
                 "autoprefixer": "^10.4.20",
