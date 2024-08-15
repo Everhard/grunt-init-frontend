@@ -5,6 +5,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-sass');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks("grunt-remove-logging");
     grunt.loadNpmTasks('grunt-contrib-uglify');
@@ -68,6 +69,16 @@ module.exports = function(grunt) {
             }
         },
 
+        cssmin: {
+            cssFiles: {
+                expand: true,
+                cwd: 'dest/css',
+                src: ['*.css', '!*.min.css'],
+                dest: 'dest/css',
+                ext: '.min.css'
+            }
+        },
+
         jshint: {
             'js-files': ['Gruntfile.js', 'src/**/*.js']
         },
@@ -113,7 +124,7 @@ module.exports = function(grunt) {
     });
 
     grunt.registerTask('html', ['includes']);
-    grunt.registerTask('styles', ['sass', 'postcss']);
+    grunt.registerTask('styles', ['sass', 'postcss', 'cssmin']);
     grunt.registerTask('scripts', ['jshint', 'concat', 'removelogging', 'uglify']);
     grunt.registerTask('assets', ['copy']);
 

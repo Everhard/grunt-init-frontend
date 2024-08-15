@@ -71,6 +71,7 @@ exports.template = function(grunt, init, done) {
                 "grunt-contrib-concat": "^2.1.0",
                 "grunt-contrib-copy": "^1.0.0",
                 "grunt-contrib-jshint": "^3.2.0",
+                "grunt-contrib-cssmin": "^5.0.0",
                 "grunt-contrib-sass": "^2.0.0",
                 "grunt-contrib-uglify": "^5.2.2",
                 "grunt-remove-logging": "^0.2.0",
