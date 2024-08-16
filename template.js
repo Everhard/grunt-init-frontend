@@ -11,19 +11,30 @@
 
 /**
  * Basic template description.
+ *
  * @type {string}
  */
 exports.description = 'This is an easy to install grunt template to start developing your frontend in seconds.';
 
 /**
  * Template-specific notes to be displayed before question prompts.
+ *
  * @type {string}
  */
 exports.notes = 'Thank you for using this template! ' +
     'Take a look at the https://github.com/Everhard/grunt-init-frontend repo before using.';
 
 /**
+ * Template-specific notes to be displayed after question prompts.
+ *
+ * @type {string}
+ */
+exports.after = 'You should now install project dependencies with _npm ' +
+    'install_. After that, you may execute project tasks with _grunt_.';
+
+/**
  * Any existing file or directory matching this wildcard will cause a warning.
+ *
  * @type {string}
  */
 exports.warnOn = '*';
@@ -67,6 +78,7 @@ exports.template = function(grunt, init, done) {
             },
             devDependencies: {
                 "grunt": "^1.6.1",
+                "bower": "^1.8.14",
                 "grunt-includes": "^1.1.0",
                 "grunt-contrib-concat": "^2.1.0",
                 "grunt-contrib-copy": "^1.0.0",
@@ -78,6 +90,15 @@ exports.template = function(grunt, init, done) {
                 "grunt-contrib-watch": "^1.1.0",
                 "@lodder/grunt-postcss": "^3.1.1",
                 "autoprefixer": "^10.4.20",
+            }
+        });
+
+        // Generate bower.json file, used by bower.
+        init.writePackageJSON('bower.json', {
+            name: props.name,
+            dependencies: {
+                "bootstrap": "^5.3.3",
+                "normalize-css": "normalize.css#^8.0.1"
             }
         });
 

@@ -30,7 +30,7 @@ grunt-init frontend
 ```
 Install the dependencies:
 ```shell
-npm install
+npm install && npx bower install
 ```
 And start working:
 ```shell
