@@ -13,6 +13,8 @@ module.exports = function(grunt) {
 
     grunt.initConfig({
 
+        pkg: grunt.file.readJSON('package.json'),
+
         includes: {
             'html-files': {
                 cwd: 'src',
@@ -91,7 +93,7 @@ module.exports = function(grunt) {
 
         uglify: {
             options: {
-                banner: '/*! <%= grunt.template.today("dd.mm.yyyy") %> */\n'
+                banner: '/*! <%= pkg.name %> v<%= pkg.version %> (<%= grunt.template.today("dd.mm.yyyy") %>) */\n'
             },
             'js-files': {
                 files: {
